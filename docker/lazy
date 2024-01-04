@@ -1,6 +1,4 @@
 #!/bin/bash
-# cubeworld setup
-[ ! -f "/data/Server.exe" ] && (wget -qO- 'https://archive.org/download/CubeWorldAlpha/cubeworld-20130624.zip'|unzip -jd/data -)
 # args: ./lazy <in> <out> <tcp/udp>
 [ "$(which socat)" ] || exec echo deps:\ socat
 [ $3 ] || exec grep \#\ args: "$0"

@@ -1,5 +1,5 @@
 #!/bin/sh
 set -m
 WINEDEBUG=-all wine Server.exe & pid=$!
-(/docker/silence && kill -2 $pid) &
+[ "$CW_SILENCE" == 1 ] && (/docker/silence && kill -2 $pid) &
 fg %1

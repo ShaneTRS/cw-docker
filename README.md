@@ -4,3 +4,5 @@ This image does the following:
 - Installs game to `/data` from [The Internet Archive](https://archive.org/details/CubeWorldAlpha)
 - Connect users via lazy-startup proxy
 - Automatically shuts down the server after lack of network activity
+
+Change settings (including the `server.cfg` seed) via the environmental variables.
