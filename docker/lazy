@@ -1,0 +1,22 @@
+#!/bin/bash
+# cubeworld setup
+[ ! -f "/data/Server.exe" ] && (wget -qO- 'https://archive.org/download/CubeWorldAlpha/cubeworld-20130624.zip'|unzip -jd/data -)
+# args: ./lazy <in> <out> <tcp/udp>
+[ "$(which socat)" ] || exec echo deps:\ socat
+[ $3 ] || exec grep \#\ args: "$0"
+set -m; trap "exec pkill -P $$" exit
+(kill -19 $BASHPID; exec /docker/start) &
+smsg () { echo -e "\033[0;33m[SERVICE]\033[0;0m $@" ;}
+smsg Started and suspended server before initialization
+smsg Proxying ${3^^} connections on $1 to $2.
+exec 3>/dev/null
+IFS=/; for i in $3; do
+    socat $i-listen:$1,fork,reuseaddr "system:{
+        kill -USR1 $$
+        i=150; while [ \$i -gt 0 ]; do
+            socat - $i\:0.0.0.0\:$2 && break
+            i=\$((i-1)); sleep 0.2
+        done
+    }" 2>&3 &
+done
+trap fg\ %1 USR1; wait 2>&3

@@ -1,0 +1,17 @@
+#!/bin/bash
+# args: ./silence <seconds:300> <interval:10> <bytes:512> <interface:lo>
+[[ "$@" =~ --help ]] && exec grep \#\ args: "$0"
+len=${1:-300}; int=${2:-10}; min=${3:-512}; if=${4:-lo}
+net () { cat /sys/class/net/$if/statistics/rx_bytes ;}
+smsg () { echo -e "\033[0;33m[SERVICE]\033[0;0m $@" ;}
+smsg Monitoring for $len seconds of silence.
+for (( eta = $len; eta > 0; eta=$((eta-int)) )); do
+    bf=$(net); sleep $int
+    [ $(($(net) - $bf)) -gt $min ] &&
+        eta=$len
+    if [[ $eta -lt $(( len / 4 * (4 - warn) + int )) ]]; then
+        smsg Exiting in $eta\s.
+        ((warn++))
+    fi
+done
+smsg Silent for $len seconds, exiting.

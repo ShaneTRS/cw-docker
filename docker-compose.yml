@@ -1,0 +1,12 @@
+version: "3.8"
+name: cubeworld
+services:
+  server:
+    image: shanetrs:cubeworld
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    ports:
+      - "12345:2000/tcp"
+    volumes:
+      - .:/data
