@@ -3,6 +3,7 @@ name: cubeworld
 services:
   server:
     build: .
+    image: shanetrs:cubeworld
     tty: true
     stdin_open: true
     restart: unless-stopped
