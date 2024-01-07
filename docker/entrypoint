@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "$CW_SEED" > /data/server.cfg
-[[ "$CW_LAZY" == 1 ]] && exec /docker/lazy "$@"
+[ "$CW_LAZY" == 1 ] && exec /docker/lazy "$@"
 exec /docker/start
